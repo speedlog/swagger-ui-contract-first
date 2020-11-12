@@ -1,6 +1,6 @@
 # Run REST API from swagger-ui
 
-We can found many examples, where swagger-ui is available, when we add to project "springfox-swagger2" library.
+We can find many examples, where swagger-ui is available, when we add to project "springfox-swagger2" library.
 ```
 <dependency>
     <groupId>io.springfox</groupId>
