@@ -1,0 +1,34 @@
+dependencies {
+	// from build/generated/pom.xml
+	// dependencies for generated interfaces
+	compile 'javax.xml.bind:jaxb-api:2.2.11'
+	compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+	compile 'org.openapitools:jackson-databind-nullable:0.1.0'
+	compile 'javax.validation:validation-api'
+	// we don't need springfox-swagger2, we just need annotations
+	compile 'io.swagger:swagger-annotations:1.5.23'
+}
+
+tasks.openApiGenerate.dependsOn tasks.openApiValidate
+compileJava.dependsOn tasks.openApiGenerate
+
+def contractFile = "$rootDir/src/main/resources/contract/some-test-API.v1.yaml".toString()
+
+openApiValidate {
+	inputSpec = contractFile
+	recommend = true
+}
+
+openApiGenerate {
+	generatorName = "spring"
+	inputSpec = contractFile
+	outputDir = "$buildDir/generated".toString()
+	apiPackage = "pl.speedlog.example.swaggerui.api"
+	modelPackage = "pl.speedlog.example.swaggerui.model"
+	configOptions = [
+			dateLibrary: "java8",
+			interfaceOnly: "true"
+	]
+}
+
+sourceSets.main.java { srcDir "$buildDir/generated/src/main/java" }

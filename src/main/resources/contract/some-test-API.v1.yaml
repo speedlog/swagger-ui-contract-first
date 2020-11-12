@@ -1,0 +1,104 @@
+openapi: 3.0.0
+info:
+  title: Some test API
+  version: '1.0'
+  description: 'Example API to '
+  contact:
+    name: Mariusz Wyszomierski
+tags:
+  - name: Example API
+    description: Example API to load it in swagger-ui
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  /animals:
+    get:
+      summary: /dog
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/animal'
+              examples:
+                all-animals:
+                  value:
+                    animals:
+                      - name: dog
+                        mammal: true
+                      - name: shark
+                        mammal: true
+      operationId: all-animals
+      description: Return all animals
+  /cars:
+    get:
+      summary: all-cars
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/car'
+              examples:
+                all-cars:
+                  value:
+                    - name: steam machine
+                      productionYear: 1769
+                    - name: tesla model s
+                      productionYear: 2020
+      operationId: get-cars
+      description: Return all animals
+components:
+  schemas:
+    animal:
+      title: animal
+      type: object
+      description: Animal object
+      x-examples:
+        mammal:
+          name: dog
+          mammal: true
+        not-mammal:
+          name: shark
+          mammal: false
+      properties:
+        name:
+          type: string
+          description: Name of animal
+        mammal:
+          type: boolean
+          description: Is a mammal?
+      required:
+        - name
+        - mammal
+    car:
+      title: car
+      type: object
+      description: Car object
+      properties:
+        name:
+          type: string
+          description: Name of model
+        productionYear:
+          type: integer
+          minimum: 1700
+          maximum: 2100
+          exclusiveMinimum: true
+          exclusiveMaximum: true
+          description: Production year
+      required:
+        - name
+        - productionYear
+      x-examples:
+        tesla:
+          name: Tesla Model S
+          productionYear: 2020
+  securitySchemes: {}
